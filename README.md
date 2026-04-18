@@ -83,6 +83,12 @@ Follow the [step-by-step workflow guide](https://denisecase.github.io/pro-analyt
 4. Phase 4. **Modify**
 5. Phase 5. **Apply**
 
+## Phase 4: Modify
+- Adjusted thresholds to make the anomaly detection more sensitive
+
+## Phase 5: Apply
+- see docs/index.md "Custom Project" section
+
 ## Challenges
 
 Challenges are expected.

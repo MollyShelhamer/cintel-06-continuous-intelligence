@@ -1,8 +1,8 @@
 """
-continuous_intelligence_case.py - Project script (example).
+continuous_intelligence_shelhamer.py - Project script (example).
 
-Author: Denise Case
-Date: 2026-03
+Author: Molly Shelhamer
+Date: 2026-04
 
 System Metrics Data
 
@@ -34,11 +34,11 @@ Questions to Consider
 Paths (relative to repo root)
 
     INPUT FILE: data/system_metrics_case.csv
-    OUTPUT FILE: artifacts/system_assessment_case.csv
+    OUTPUT FILE: artifacts/system_assessment_shelhamer.csv
 
 Terminal command to run this file from the root project folder
 
-    uv run python -m cintel.continuous_intelligence_case
+    uv run python -m cintel.continuous_intelligence_shelhamer
 
 OBS:
   Don't edit this file - it should remain a working example.
@@ -66,15 +66,16 @@ DATA_DIR: Final[Path] = ROOT_DIR / "data"
 ARTIFACTS_DIR: Final[Path] = ROOT_DIR / "artifacts"
 
 DATA_FILE: Final[Path] = DATA_DIR / "system_metrics_case.csv"
-OUTPUT_FILE: Final[Path] = ARTIFACTS_DIR / "system_assessment_case.csv"
+OUTPUT_FILE: Final[Path] = ARTIFACTS_DIR / "system_assessment_shelhamer.csv"
 
 # === DEFINE THRESHOLDS ===
 
 # Analysts need to know their data and
 # choose thresholds that make sense for their specific use case.
+# These values have been adjusted for this scenario.
 
-MAX_ERROR_RATE: Final[float] = 0.05
-MAX_AVG_LATENCY: Final[float] = 40.0
+MAX_ERROR_RATE: Final[float] = 0.03
+MAX_AVG_LATENCY: Final[float] = 35.0
 
 # === DEFINE THE MAIN FUNCTION ===
 
