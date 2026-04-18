@@ -76,6 +76,7 @@ OUTPUT_FILE: Final[Path] = ARTIFACTS_DIR / "system_assessment_shelhamer.csv"
 
 MAX_ERROR_RATE: Final[float] = 0.03
 MAX_AVG_LATENCY: Final[float] = 35.0
+MAX_SEVERITY_INDEX: Final[float] = 1.0
 
 # === DEFINE THE MAIN FUNCTION ===
 
@@ -119,6 +120,10 @@ def main() -> None:
         [
             (pl.col("errors") / pl.col("requests")).alias("error_rate"),
             (pl.col("total_latency_ms") / pl.col("requests")).alias("avg_latency_ms"),
+            (
+                (pl.col("errors") / pl.col("requests"))
+                * (pl.col("total_latency_ms") / pl.col("requests"))
+            ).alias("severity_index"),
         ]
     )
 
@@ -133,10 +138,12 @@ def main() -> None:
     anomalies_df = df.filter(
         (pl.col("error_rate") > MAX_ERROR_RATE)
         | (pl.col("avg_latency_ms") > MAX_AVG_LATENCY)
+        | (pl.col("severity_index") > MAX_SEVERITY_INDEX)
     )
     LOG.info(
         f"STEP 3. Using thresholds: MAX_ERROR_RATE={MAX_ERROR_RATE}, "
-        f"MAX_AVG_LATENCY={MAX_AVG_LATENCY}"
+        f"MAX_AVG_LATENCY={MAX_AVG_LATENCY}, "
+        f"MAX_SEVERITY_INDEX={MAX_SEVERITY_INDEX}"
     )
 
     LOG.info(f"STEP 3. Anomalies detected: {anomalies_df.height}")
@@ -164,6 +171,7 @@ def main() -> None:
             pl.col("errors").mean().alias("avg_errors"),
             pl.col("error_rate").mean().alias("avg_error_rate"),
             pl.col("avg_latency_ms").mean().alias("avg_latency_ms"),
+            pl.col("severity_index").mean().alias("avg_severity_index"),
         ]
     )
 
@@ -172,6 +180,7 @@ def main() -> None:
         pl.when(
             (pl.col("avg_error_rate") > MAX_ERROR_RATE)
             | (pl.col("avg_latency_ms") > MAX_AVG_LATENCY)
+            | (pl.col("avg_severity_index") > MAX_SEVERITY_INDEX)
         )
         .then(pl.lit("DEGRADED"))
         .otherwise(pl.lit("STABLE"))
